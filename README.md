@@ -61,6 +61,37 @@ Le projet "Dice" est une application construite avec Spring Boot permettant de s
 - **Lombok** :
   - Utilisez Lombok pour simplifier les getters, setters et constructeurs de vos entités.
 
+## Description de ce qui a été implementé
+- **Classe Dice** :
+  Cette classe représente un dé capable de générer un résultat aléatoire entre 1 et 6.
+  - Attributs :
+    - private final Random random : Utilisé pour générer des nombres aléatoires.
+  - Méthodes :
+    - roll() : Retourne un entier entre 1 et 6, simulant le lancer d'un dé.
+- **Classe DiceRollLog** :
+Cette classe modélise une entité représentant l'historique d'un ou plusieurs lancés de dés.
+  - Annotations :
+    - @Entity : Indique que cette classe est une entité JPA.
+    - @Id : Spécifie la clé primaire de l'entité.
+    - @GeneratedValue : Génère automatiquement une valeur unique pour l'identifiant.
+    - @ElementCollection : Gère la collection de valeurs (les résultats des dés).
+- **Interface DiceRepository**
+Cette interface gère l'interaction avec la base de données pour l'entité DiceRollLog. Extends JpaRepository<DiceRollLog, Long> : Fournit des méthodes standards (CRUD) pour manipuler l'entité DiceRollLog.
+- **Classe DiceService** :
+  Cette classe encapsule la logique métier pour gérer les lancés de dés et leur enregistrement.
+  - Attributs :
+     - private final Dice dice : Instance de la classe Dice pour simuler les lancés.
+     - private final DiceRepository repository : Interface pour interagir avec la base de données.
+  - Méthodes :
+    - rollDices(int count) :
+      Génère count résultats de dés en utilisant la méthode roll de la classe Dice. Utilise un flux (Stream.generate) pour appeler la méthode roll de la classe Dice un nombre spécifié de fois (count).
+      Sauvegarde les résultats et le nombre de dés dans l'historique grâce au DiceRepository.
+      Retourne la liste des résultats.
+    - getAllLogs() :
+      Retourne tous les enregistrements de l'historique des lancés à partir de la base de données.
+- **Classe DiceController** :
+  Cette classe fournit des endpoints REST pour interagir avec l'application.
+
 ---
 
 ## Livrables
